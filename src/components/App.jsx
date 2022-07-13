@@ -6,14 +6,7 @@ import { Filter } from './Filter';
 
 export class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
-    // name: '',
-    // number: '',
+    contacts: [],
     filter: '',
   };
 
@@ -58,6 +51,37 @@ export class App extends Component {
     });
   };
 
+  componentDidMount() {
+    // console.log('componentDidMount');
+    const parsedContacts = JSON.parse(localStorage.getItem('contacts'));
+    // console.log('parsedContacts', parsedContacts);
+    if (parsedContacts) {
+      this.setState({
+        contacts: parsedContacts,
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // console.log(
+    //   'componentDidUpdate',
+    //   'prevProps',
+    //   prevProps,
+    //   'prevState',
+    //   prevState.contacts,
+    //   'this.state',
+    //   this.state.contacts
+    // );
+
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
+  componentWillUnmount() {
+    console.log('componentWillUnmount');
+  }
+
   render() {
     const { contacts, filter } = this.state;
     const { handleSubmit, handleDelete, handleFilter } = this;
@@ -68,6 +92,8 @@ export class App extends Component {
     );
     // console.log('contacts', contacts);
     // console.log('filteredContacts', filteredContacts);
+
+    // const localContacts = localStorage.getItem('contacts');
 
     return (
       <div
