@@ -3,18 +3,17 @@ import { nanoid } from 'nanoid';
 import { ContactForm } from './ContactForm';
 import { ContactList } from './ContactList';
 import { Filter } from './Filter';
+import { useLocalStorage } from 'hooks/useLocalStorage';
 
 export const App = () => {
-  const [contacts, setContacts] = useState(() => {
-    // console.log('get localstorage');
-    return JSON.parse(window.localStorage.getItem('contacts')) ?? [];
-  });
+  const [contacts, setContacts] = useLocalStorage('contacts', []);
+
   const [filter, setFilter] = useState('');
 
-  useEffect(() => {
-    // console.log('contacts uef');
-    window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  // useEffect(() => {
+  //   // console.log('contacts uef');
+  //   window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  // }, [contacts]);
 
   const handleSubmit = ({ name, number }) => {
     // const { contacts } = this.state;
@@ -45,10 +44,21 @@ export const App = () => {
     setFilter(value);
   };
 
-  const normalized = filter.toLowerCase();
-  const filteredContacts = contacts.filter(item =>
-    item.name.toLowerCase().includes(normalized)
-  );
+  const getFilteredContacts = () => {
+    if (!filter) {
+      return contacts;
+    } else {
+      // console.log('filter filtered');
+      const normalized = filter.toLowerCase();
+
+      return contacts.filter(item =>
+        item.name.toLowerCase().includes(normalized)
+      );
+    }
+  };
+
+  const filteredContacts = getFilteredContacts();
+  // console.log('filteredContacts', filteredContacts);
 
   return (
     <div
