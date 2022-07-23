@@ -10,14 +10,11 @@ export const App = () => {
 
   const [filter, setFilter] = useState('');
 
-  // useEffect(() => {
-  //   // console.log('contacts uef');
-  //   window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  // }, [contacts]);
-
   const handleSubmit = ({ name, number }) => {
     // const { contacts } = this.state;
-    const addedName = contacts.find(item => item.name === name);
+    const addedName = contacts.find(
+      item => item.name.toLowerCase() === name.toLowerCase()
+    );
     const addedNumber = contacts.find(item => item.number === number);
 
     const contact = {
