@@ -40,7 +40,9 @@ export const App = () => {
   };
 
   const handleDelete = id => {
-    setContacts(contacts.filter(item => item?.id !== id));
+    setContacts(prevState =>
+      prevState.contacts.filter(item => item?.id !== id)
+    );
   };
 
   const handleFilter = e => {
